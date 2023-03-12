@@ -1,0 +1,127 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-12">
+            <p class="text-responsive text-center text-white ">Paste your YouTube video link and click Go</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-md-1"></div>
+        <div class="col-12 col-md-10 px-3">
+            <form action="{% url 'youtube_index' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="{{form.link.id_for_label}}">{{form.link.label}}</span>
+                    </div>
+                    {{form.link}}
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-danger">Go</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="offset-md-1"></div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div {% if message.tags %} class='bg-{{message.tags}} text-center p-4 mt-5 border rounded sadow-lg' {% endif %}>
+                <p class="h3">{{message}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- download page only -->
+    {% if download %}
+    <div class="row mt-5 shadow-lg border rounded">
+        <div class="col-12 col-md-6 py-3">
+            <img src="{{tumbnail_url}}" class="img-thumbnail shadow" alt="tumbnail image"><br>
+            <p class="p-2 mt-2 text-white shadow border rounded" style="font-size: 10vm;">Title: {{title}}</p>
+            <p class="text-white" style="font-size: 10vm;">
+                <span class="border rounded shadow p-2">Views: {{view}}</span>
+                <span class="border rounded shadow p-2">Duration: {{length}} Sec</span>
+                <button class="btn btn-outline-light shadow mt-3 mt-md-0" type="button" data-toggle="collapse" data-target="#desc"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Description
+                </button>
+            </p>
+            <div class="collapse" id="desc">
+                <div class="card card-body shadow">
+                    {{desc}}
+                </div>
+            </div>
+            <div class="embed-responsive embed-responsive-16by9 border shadow my-2">
+                <iframe class="embed-responsive-item" src="{{embed_link}}"></iframe>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 pt-3">
+            <table class="table table-hover text-white text-center table-striped border shadow">
+                <thead style="background-color: #334390;">
+                    <tr>
+                        <th scope="col">Quality</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if videos %}
+                        {% for video in videos %}
+                        <tr>
+                            <th>{{video.resolution}}</th>
+                            <td>{{video.mime_type}}</td>
+                            <td><a href="{% url 'youtube_downloads' id video.itag %}" type="button"
+                                    class="btn btn-sm btn-success" download>Download</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if audios %}
+                        {% for audio in audios %}
+                        <tr>
+                            <th>{{audio.resolution}}</th>
+                            <td>{{audio.mime_type}}</td>
+                            <td><a href="{% url 'youtube_downloads' id audio.itag %}" type="button"
+                                    class="btn btn-sm btn-success" download>Download</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end download page only -->
+
+    <div class="row pt-5" id="help">
+        <div class="col-12">
+            <p class="text-responsive text-center text-white">How to download YouTube video online?</p>
+        </div>
+    </div>
+    <div class="row pt-2 text-white text-center">
+        <div class="col-12 col-md-4 pb-2">
+            <div class="border rounded p-4 shadow">
+                <div class="h3">Copy YouTube URL</div>
+                <div class="p">Copy your video URL from YouTube that you need to download. You can use Ctrl+C or with
+                    the
+                    context menu.</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 pb-2">
+            <div class="border rounded p-4 shadow">
+                <div class="h3 py-1">Paste in search field</div>
+                <div class="p py-2">Paste YouTube video URL in the search field and click 'Go'. Use Ctrl+V.</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 pb-2">
+            <div class="border rounded p-4 shadow">
+                <div class="h3">Download Video</div>
+                <div class="p">You will get a list of files for download, video, and audio. Click the 'Download' button
+                    to start downloading the file</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

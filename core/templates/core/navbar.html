@@ -1,0 +1,22 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-mainbg">
+    <a class="navbar-brand navbar-logo" href="{% url 'home' %}">
+        <img height="40vh" src="{% static 'core/images/logo.png' %}"> Video Downloader</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+            <li class="nav-item {{home_active}}">
+                <a class="nav-link {{home_disabled}}" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item {{youtube_active}}">
+                <a class="nav-link {{youtube_disabled}}" href="{% url 'youtube_index' %}"><i class="fab fa-youtube"></i> YouTube</a>
+            </li>
+            <li class="nav-item {{facebook_active}}">
+                <a class="nav-link {{facebook_disabled}}" href="{% url 'facebook_index' %}"><i class="fab fa-facebook"></i> Facebook</a>
+            </li>
+        </ul>
+    </div>
+</nav>
